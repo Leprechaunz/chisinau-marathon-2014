@@ -5,17 +5,15 @@ import json
 
 class Range:
     def __init__(self, time):
-        self.time = time
+        self.startTime = time
+        self.endTime = time
         self.count = 0
-
-    def json_dump(self):
-        return {
-            'time': self.time,
-            'count': self.count,
-        }
 
     def inc(self):
         self.count += 1
+
+    def label(self):
+        return self.startTime.strftime("%H:%M") + " - " + self.endTime.strftime("%H:%M")
 
 
 class External:
@@ -46,9 +44,8 @@ class External:
         for man in self.results:
             t = datetime.datetime.strptime(man[9], "%H:%M:%S.%f")
             for n in self.ranges:
-                prev = n.time
-                next = n.time + datetime.timedelta(minutes=self.step)
-                if prev < t < next:
+                n.endTime = n.startTime + datetime.timedelta(minutes=self.step)
+                if n.startTime < t < n.endTime:
                     n.inc()
                     break
 

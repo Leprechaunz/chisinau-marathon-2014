@@ -1,0 +1,22 @@
+{
+  "name": "ChisinauMarathon",
+  "homepage": "https://github.com/Leprechaunz/chisinau-marathon-2014",
+  "authors": [
+    "Andrei Tcaci <leprechaunxx@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chartist": "~0.9.4",
+    "jquery": "~2.1.4"
+  }
+}
