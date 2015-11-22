@@ -28,10 +28,8 @@ class External:
         self.results = []
 
     def request(self, key):
-        url = "http://my3.raceresult.com/RRPublish/data/list.php?callback=x&eventid=37962&key=2eb115d624f04b49c9d0146f183365a8&listname=2+Final+results%7CResult+List+MF&page=results&contest=0&r=all&l=0&_=1445038649760"
-        response = urllib.request.urlopen(url)
-        x = response.readall().decode('utf-8')
-        x = x[2:-2]
+        file = open('data/2014.json')
+        x = file.read()
         data = json.loads(x)
         self.results = data['data'][key]['M']
 
