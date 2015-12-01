@@ -1,9 +1,5 @@
 import datetime
 import json
-from trans import RomanianLanguagePack
-from transliterate import translit, get_available_language_codes
-from transliterate.base import registry
-
 
 class Range:
     def __init__(self, time):
@@ -54,18 +50,6 @@ class External:
                 if n.startTime < t < n.endTime:
                     n.inc()
                     break
-
-    def search(self, query):
-        registry.register(RomanianLanguagePack)
-
-        options = []
-        print(get_available_language_codes())
-        for elem in self.results:
-            searchable = elem[0] + elem[3] + translit(elem[3], 'ro')
-            if searchable.find(query) != -1:
-                options.append(elem)
-
-        return query, options
 
     def print(self):
         for r in self.ranges:
