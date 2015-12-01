@@ -1,0 +1,15 @@
+body {
+    padding-top: 2rem;
+}
+
+.ct-bar {
+    stroke-width: 40px;
+    stroke: #87cefa !important;
+}
+.ct-highlight {
+    stroke: #fab387 !important;
+}
+
+.ct-label {
+    font-size: 1.5rem;
+}

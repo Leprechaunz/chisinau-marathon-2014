@@ -1,6 +1,8 @@
 import datetime
-import urllib.request
 import json
+from trans import RomanianLanguagePack
+from transliterate import translit, get_available_language_codes
+from transliterate.base import registry
 
 
 class Range:
@@ -21,31 +23,49 @@ class External:
     KEY_21KM = '21097 m'
     KEY_42KM = '42195 m'
 
-    def __init__(self, step, number):
+    def __init__(self):
         self.ranges = []
-        self.step = step
-        self.step_number = number * self.step
         self.results = []
 
-    def request(self, key):
+    def request(self, key, gender):
         file = open('data/2014.json')
         x = file.read()
         data = json.loads(x)
-        self.results = data['data'][key]['M']
 
-    def calculate(self, hour, minute):
+        if gender == 'ALL':
+            self.results += data['data'][key]['M']
+            self.results += data['data'][key]['F']
+        elif gender == 'M' or gender == 'F':
+            self.results = data['data'][key][gender]
+
+    def calculate(self, step, number, hour, minute):
+        step = step
+        step_number = number * step
+
         base = datetime.datetime(1900, 1, 1, hour, minute)
-        for i in range(0, self.step_number, self.step):
+        for i in range(0, step_number, step):
             r = Range(base + datetime.timedelta(minutes=i))
             self.ranges.append(r)
 
         for man in self.results:
             t = datetime.datetime.strptime(man[9], "%H:%M:%S.%f")
             for n in self.ranges:
-                n.endTime = n.startTime + datetime.timedelta(minutes=self.step)
+                n.endTime = n.startTime + datetime.timedelta(minutes=step)
                 if n.startTime < t < n.endTime:
                     n.inc()
                     break
+
+    def search(self, query):
+        registry.register(RomanianLanguagePack)
+
+        options = []
+        print(get_available_language_codes())
+        for elem in self.results:
+            searchable = elem[0] + elem[3] + translit(elem[3], 'ro')
+            if searchable.find(query) != -1:
+                options.append(elem)
+
+        return query, options
 
     def print(self):
         for r in self.ranges:

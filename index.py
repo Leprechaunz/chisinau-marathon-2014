@@ -9,20 +9,21 @@ def index():
     return render_template('layout.html')
 
 
-@app.route("/json/<length>")
-def json10(length):
+@app.route("/graph/<length>/", defaults={'gender': 'ALL'})
+@app.route("/graph/<length>/<gender>")
+def graph(length, gender):
     if length == '10km':
-        e = External(5, 16)
-        e.request(External.KEY_10KM)
-        e.calculate(0, 30)
+        e = External()
+        e.request(External.KEY_10KM, gender)
+        e.calculate(5, 16, 0, 30)
     elif length == '21km':
-        e = External(5, 22)
-        e.request(External.KEY_21KM)
-        e.calculate(1, 00)
+        e = External()
+        e.request(External.KEY_21KM, gender)
+        e.calculate(5, 24, 1, 5)
     else:
-        e = External(10, 21)
-        e.request(External.KEY_42KM)
-        e.calculate(2, 30)
+        e = External()
+        e.request(External.KEY_42KM, gender)
+        e.calculate(10, 20, 2, 40)
 
     labels = []
     series = []
@@ -31,7 +32,6 @@ def json10(length):
         series.append(c.count)
 
     return jsonify(labels=labels, series=[series])
-
 
 if __name__ == "__main__":
     app.run(debug=True)

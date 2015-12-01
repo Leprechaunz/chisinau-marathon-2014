@@ -1,21 +1,22 @@
 $(document).ready(function() {
     var chart;
 
-    $.get("json/10km", function(data) {
+    $.get("graph/10km/", function(data) {
         chart = new Chartist.Bar('.ct-chart', data, {
             axisY: {
-                onlyInteger: true,
-                scaleMinSpace: 50
+                onlyInteger: true
             },
             width: '100%',
             height: '500px'
         });
     });
 
-    $("#race-dropdown").change(function () {
-        var race = $(this).val();
-        $.get("json/" + race, function(data) {
+    $("#race-dropdown, #gender-dropdown").change(function () {
+        var race = $("#race-dropdown").val();
+        var gender = $("#gender-dropdown").val();
+
+        $.get("graph/" + race + "/" + gender, function(data) {
             chart.update(data);
         });
-    })
+    });
 });
