@@ -1,6 +1,7 @@
 import datetime
 import json
 
+
 class Range:
     def __init__(self, time):
         self.startTime = time
